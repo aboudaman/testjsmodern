@@ -67,14 +67,14 @@ const url =
 //   "https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid=440";
   "https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid=440"
 
-  try {
-        const data = await fetch(url);
-        const dataJSON = await data.json();
-        printData(dataJSON)   
-  } catch (error) {
-      console.log(error)
+//   try {
+//         const data = await fetch(url);
+//         const dataJSON = await data.json();
+//         printData(dataJSON)   
+//   } catch (error) {
+//       console.log(error)
       
-  }
+//   }
 
 function printData(jsonData) {
     let jsonObject = jsonData['achievementpercentages']
@@ -87,8 +87,39 @@ function printData(jsonData) {
         achievementArray.push(newAchievement)
         // newAchievement.printValues()
     }
-    console.log(achievementArray)
+    // console.log(achievementArray)
     // for (let n of achievementArray) {
     //     console.log(n['name'])
     // }
 }
+
+let nums = [1, 3, 4, 4]
+let nums2 = [1, 3, 4, 4]
+let cars = [
+    {model: 'audi', price: 10000},
+    {model: 'mercedex', price: 20000},
+    {model: 'lamborghini', price: 30000},
+]
+cars.map((model, price) => {
+    model.price += 1
+})
+// console.log(cars)
+let numsWithReturnMap = nums.map((number, index) => {
+    return number += 1 
+})
+
+let numsWithReturnForEach = nums2.forEach((number) => {
+    return number += 1
+})
+
+console.log(nums)
+console.log(numsWithReturnMap)
+console.log(nums2)
+console.log(numsWithReturnForEach)
+console.log(nums2)
+console.log(`null == undefined ==> ${null == undefined}`)
+console.log(`null === undefined ==> ${null === undefined}`)
+console.log(typeof null)
+console.log(typeof undefined)
+
+// console.log(cars)

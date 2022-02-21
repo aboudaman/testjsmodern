@@ -112,14 +112,4 @@ let numsWithReturnForEach = nums2.forEach((number) => {
     return number += 1
 })
 
-console.log(nums)
-console.log(numsWithReturnMap)
-console.log(nums2)
-console.log(numsWithReturnForEach)
-console.log(nums2)
-console.log(`null == undefined ==> ${null == undefined}`)
-console.log(`null === undefined ==> ${null === undefined}`)
-console.log(typeof null)
-console.log(typeof undefined)
-
 // console.log(cars)

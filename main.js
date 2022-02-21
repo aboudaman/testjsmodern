@@ -15,15 +15,18 @@
 // let content = document.getElementById('menu');
 // console.log(content.firstElementChild);
 let isLoading = true
+let markCompleteButton
 let allData = []
-let allItems = document.querySelector('.alldata')
+let allItems = document.querySelector('#alldata')
 let submitButton = document.querySelector('#submit-button')
+
 let newItemField = document.querySelector('.new-item')
 let incompleteTasks = document.querySelector('.incomplete')
 const body = document.querySelector('.container')
 const page = document.querySelector('body')
 const loader = document.querySelector('.loader')
 let list = document.createElement('ul')
+list.className = 'task-list'
 
 
 fetch("https://jsonplaceholder.typicode.com/todos")
@@ -49,7 +52,6 @@ function showLoader() {
 
 function closeLoader() {
     loader.innerHTML = ""
-
 }
 
 function handleAddNewItem() {
@@ -65,6 +67,44 @@ function handleAddNewItem() {
     allData.push(newItem)
 }
 
+// function changeTaskBackground(id) {
+//     const task = document.getElementById(id)
+//     task.style = 'background-color: orange;'
+
+// }
+
+function removeAllChildNodes(parent) {
+    console.log(parent.firstChild)
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild)
+    }
+}
+
+function handleMarkComplete(event) {
+    // event.srcElement provides the button
+    console.log(event.srcElement.innerText)
+    // get the parent node of the button
+    let listItem = event.srcElement.parentNode
+    let listID = listItem.id
+    updateListItem(listID)
+
+    // render()
+}
+
+function updateListItem(iD) {
+    // update the dom node corresponding to the iD by using replaceChild
+    const existingItem = document.getElementById(iD)
+    console.log(existingItem.parentNode)
+    allData.forEach((data) => {
+        if (data.id == iD) {
+            data.completed =!data.completed
+            const newItem = createListItem(data.title, data.completed, data.id)
+            // list.appendChild(newItem)
+            list.replaceChild(newItem, existingItem)
+        }
+    })
+}
+
 submitButton.addEventListener('click', handleAddNewItem)
 
 function showData() {
@@ -72,42 +112,83 @@ function showData() {
     // list.style.listStyleType = 'none'
     // list.style = "list-style: none; background-color: blue;"
     allData.forEach((data) => {
-        const button = createButton('mark complete', data.id, 'complete')
-        const span = document.createElement('span')
-        span.appendChild(button)
-        const li = createListItem(data.title, data.completed, data.id, span)
+        // const button = createButton(data.completed, data.id, 'complete')
+        const li = createListItem(data.title, data.completed, data.id)
+        // li.appendChild(button)
         list.appendChild(li)
         // list.appendChild(span)
         // list.appendChild(button)
     })
     allItems.appendChild(list)
+    // markCompleteButton  = document.querySelector('.task-list')
+    // markCompleteButton.addEventListener('click', handleMarkComplete)
 }
 
 function createButton(text,id, className) {
     const button = document.createElement('button')
-    button.innerHTML = text
+    button.innerHTML = (text)? 'completed':'Mark Complete'
+    button.disabled = (text)? true : false
     // button.style = "background-color: green"
     button.className = className
     button.id = id
     return button
 }
 
-function createListItem(title, completed, id, markButton="") {
-    console.log(markButton)
+function removeOneNode(parent, child) {
+    parent.removeChild(child)
+}
+function handleDelete(event) {
+    const btnParent = event.srcElement.parentNode
+    const ulParent =btnParent.parentNode
+    removeOneNode(ulParent, btnParent)
+
+    // console.log(ulParent)
+    // console.log(btnParent)
+
+    // const iD = event.srcElement.parentNode.id
+    // const parent = eve
+    // const existingItem = document.getElementById(iD)
+    // console.log(existingItem.parentNode)
+    // allData.forEach((data) => {
+    //     if (data.id == iD) {
+    //         data.completed =!data.completed
+    //         const newItem = createListItem(data.title, data.completed, data.id)
+    //         // list.appendChild(newItem)
+    //         list.replaceChild(newItem, existingItem)
+    //     }
+    // })
+}
+function createListItem(title, completed, id) {
     const li = document.createElement('li')
+    // Set an id attribute to the list item
+    li.setAttribute('id', id)
+    li.className = 'my-task'
     li.style = "list-style: none;"
     li.style.backgroundColor = (completed)? 'green' : 'red'
-    li.innerHTML = `<h5> ${title}  <span> <button>geeee</button> </span></h5>`
+    let para =  document.createElement('p')
+    para.innerText = title
+    let button = document.createElement('button')
+    let deleteButton = document.createElement('button')
+    button.innerText = (completed)? 'Done' : 'Mark Completed'
+    deleteButton.innerText = 'Delete'
+    li.appendChild(para)
+    li.appendChild(button)
+    li.appendChild(deleteButton)
+    button.addEventListener('click', handleMarkComplete)
+    deleteButton.addEventListener('click', handleDelete)
+    // li.innerHTML = `<div> <p> ${title} </p> <button> ${(completed)? 'Completed Task' : 'Mark Completed'} </button></div>`
     return li
 }
 
 function render() {
- 
+    removeAllChildNodes(list)
+    // allItems.innerHTML = ""
+    console.log('calling render!!!')
     if (isLoading) {
         showLoader()
     } else {
-
         showData()
     }
 }
-render()
+
+// render()
